@@ -1,0 +1,17 @@
+{
+  "name": "oh-mine-openclaw",
+  "version": "0.1.0",
+  "description": "极简主义 OpenClaw 多 Agent 编排插件 — 3 个 Agent，3 个模式，装完就用",
+  "type": "module",
+  "main": "index.ts",
+  "openclaw": {
+    "extensions": ["./index.ts"]
+  },
+  "scripts": {
+    "build": "tsc",
+    "dev": "tsc --watch"
+  },
+  "keywords": ["openclaw", "plugin", "agent", "orchestration"],
+  "author": "Tony",
+  "license": "MIT"
+}
