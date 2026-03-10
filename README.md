@@ -1,106 +1,108 @@
 # ⛏️ Oh Mine OpenClaw
 
-> **极简主义多 Agent 编排插件** — 3 个 Agent，3 个模式，装完就用
+> **Minimalist Multi-Agent Orchestration Plugin** — 3 Agents, 3 Modes, Ready to Use
 
 [![OpenClaw Plugin](https://img.shields.io/badge/OpenClaw-Plugin-blue)](https://openclaw.ai)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 [![Stars](https://img.shields.io/github/stars/toller892/oh-mine-openclaw)](https://github.com/toller892/oh-mine-openclaw/stargazers)
 
----
-
-## 🎯 为什么需要这个？
-
-你是否厌倦了复杂的多 Agent 系统？11 个 Agent、50 个配置项、3 页文档...
-
-**Oh Mine OpenClaw 说：够了！**
-
-- ✅ **3 个 Agent** 就够了：Planner（规划）、Worker（执行）、Reviewer（审查）
-- ✅ **3 个模式** 任选：fast（快）、balanced（平衡）、thorough（彻底）
-- ✅ **零配置启动**：装完就用，模型自动选择
-- ✅ **灵活自定义**：想改模型？一行命令
-
-> 🤔 **对比 oh-my-openclaw**：它有 11 个 Agent，适合大项目；你有 3 个 Agent，适合日常任务。
+**[🇨 中文文档](README_CN.md)** | **[🇺🇸 English](README.md)**
 
 ---
 
-## 🚀 快速开始
+## 🎯 Why You Need This
 
-### 安装
+Tired of complex multi-agent systems? 11 agents, 50 config options, 3 pages of documentation...
+
+**Oh Mine OpenClaw says: Enough!**
+
+- ✅ **Just 3 Agents**: Planner, Worker, Reviewer
+- ✅ **Just 3 Modes**: fast, balanced, thorough
+- ✅ **Zero Config**: Install and use, auto model selection
+- ✅ **Fully Customizable**: Change models with one command
+
+> 🤔 **vs oh-my-openclaw**: It has 11 agents for big projects. You have 3 agents for daily tasks.
+
+---
+
+## 🚀 Quick Start
+
+### Installation
 
 ```bash
 openclaw plugins install oh-mine-openclaw
 ```
 
-### 使用
+### Usage
 
 ```bash
-# 快速模式 — Worker 直接干
-/mine-fast 修复这个空指针异常
+# Fast Mode — Worker executes directly
+/mine-fast Fix this null pointer exception
 
-# 平衡模式 — Planner 规划 + Worker 执行
-/mine-balanced 加个用户登录功能，支持 GitHub OAuth
+# Balanced Mode — Planner + Worker
+/mine-balanced Add user login with GitHub OAuth support
 
-# 彻底模式 — Planner → Worker → Reviewer 全流程
-/mine-thorough 重构这个模块，提高可维护性
+# Thorough Mode — Full pipeline: Planner → Worker → Reviewer
+/mine-thorough Refactor this module for better maintainability
 ```
 
-### 输出示例
+### Example Output
 
 ```
 ⛏️ oh-mine [balanced]
 
-**[planner]**: 分析任务...建议分 3 步：1. 创建登录 API 2. 集成 GitHub OAuth 3. 添加 session 管理
+**[planner]**: Analyzing task... Suggest 3 steps: 1. Create login API 2. Integrate GitHub OAuth 3. Add session management
 
-**[worker]**: 执行中...完成以下改动：
-- src/auth/github.ts (新增)
-- src/routes/login.ts (修改)
-- 配置项已添加到 .env.example
+**[worker]**: Executing... Completed changes:
+- src/auth/github.ts (new)
+- src/routes/login.ts (modified)
+- Config added to .env.example
 
-测试：本地测试通过，等待部署验证
+Tests: Local tests passed, awaiting deployment verification
 ```
 
 ---
 
-## ⚙️ 配置
+## ⚙️ Configuration
 
-### 查看当前配置
+### View Current Config
 
 ```bash
 /mine-config
 ```
 
-### 修改 Agent 模型
+### Change Agent Models
 
 ```bash
-# Planner 用便宜的模型
+# Use cheaper model for Planner
 /mine-set planner model qwen3.5
 
-# Worker 用最好的模型
+# Use best model for Worker
 /mine-set worker model claude-opus-4-6
 
-# Reviewer 用中等模型
+# Use mid-tier model for Reviewer
 /mine-set reviewer model claude-sonnet-4-5
 ```
 
-### 修改温度参数
+### Adjust Temperature
 
 ```bash
-# Planner 更有创意
+# More creative Planner
 /mine-set planner temperature 0.8
 
-# Worker 更稳定
+# More stable Worker
 /mine-set worker temperature 0.2
 ```
 
-### 重置配置
+### Reset Config
 
 ```bash
 /mine-reset
 ```
 
-### 配置文件
+### Config File
 
-配置保存在 `~/.openclaw/mine-config.json`：
+Saved at `~/.openclaw/mine-config.json`:
 
 ```json
 {
@@ -128,50 +130,50 @@ openclaw plugins install oh-mine-openclaw
 
 ---
 
-## 🎭 Agent 角色
+## 🎭 Agent Roles
 
-| Agent | 职责 | 推荐温度 | 适合场景 |
-|-------|------|----------|----------|
-| **Planner** 🧠 | 拆解任务、给方案、规划步骤 | 0.7 (有创意) | 复杂任务分析 |
-| **Worker** 👷 | 实际执行、写代码、改文件 | 0.3 (稳定) | 所有执行任务 |
-| **Reviewer** 👀 | 审查输出、找问题、提建议 | 0.2 (严格) | 代码审查、质量检查 |
-
----
-
-## 🎯 使用场景
-
-### ✅ 适合用 Oh Mine
-
-- 日常 bug 修复
-- 小功能开发
-- 代码审查
-- 快速原型
-- 学习/探索任务
-
-### ❌ 可能需要更复杂的系统
-
-- 大型重构项目
-- 多团队协作
-- 需要 10+ 步骤的复杂工作流
-- 需要 specialized Agent（前端、后端、DB 等）
+| Agent | Role | Recommended Temp | Best For |
+|-------|------|------------------|----------|
+| **Planner** 🧠 | Task breakdown, planning, strategy | 0.7 (creative) | Complex task analysis |
+| **Worker** 👷 | Execution, coding, file changes | 0.3 (stable) | All execution tasks |
+| **Reviewer** 👀 | Code review, finding issues, suggestions | 0.2 (strict) | Quality checks |
 
 ---
 
-## 💡 进阶技巧
+## 🎯 Use Cases
 
-### 1. 混合用模型（省钱大法）
+### ✅ Perfect for Oh Mine
+
+- Daily bug fixes
+- Small feature development
+- Code reviews
+- Rapid prototyping
+- Learning/exploration tasks
+
+### ❌ Might Need More Complex System
+
+- Large-scale refactoring
+- Multi-team collaboration
+- 10+ step complex workflows
+- Need specialized agents (frontend, backend, DB, etc.)
+
+---
+
+## 💡 Pro Tips
+
+### 1. Mix Models (Save Money)
 
 ```json
 {
   "agents": {
-    "planner": { "model": "qwen3.5" },      // 规划用便宜的
-    "worker": { "model": "claude-opus-4-6" }, // 执行用好的
-    "reviewer": { "model": "qwen3.5" }      // 审查用便宜的
+    "planner": { "model": "qwen3.5" },      // Cheap for planning
+    "worker": { "model": "claude-opus-4-6" }, // Best for execution
+    "reviewer": { "model": "qwen3.5" }      // Cheap for review
   }
 }
 ```
 
-### 2. 自定义模式流程
+### 2. Custom Mode Flows
 
 ```json
 {
@@ -184,30 +186,30 @@ openclaw plugins install oh-mine-openclaw
 }
 ```
 
-### 3. 模型自动选择
+### 3. Auto Model Selection
 
-设置 `"model": "auto"`，插件会自动检测你配置的 provider：
-- 有 Claude 用 Claude
-- 有千问用千问
-- 有 CRS 用 CRS
-
----
-
-## 📊 对比其他多 Agent 系统
-
-| 特性 | Oh Mine | Oh My OpenClaw | 其他框架 |
-|------|---------|----------------|----------|
-| Agent 数量 | 3 | 11 | 5-20+ |
-| 配置复杂度 | ⭐ | ⭐⭐⭐⭐ | ⭐⭐⭐ |
-| 学习曲线 | 5 分钟 | 1 小时 | 半天 |
-| 适合场景 | 日常任务 | 大项目 | 企业级 |
-| Token 消耗 | 低 | 中 | 高 |
+Set `"model": "auto"` and the plugin auto-detects your configured providers:
+- Claude available → Use Claude
+- Qwen available → Use Qwen
+- CRS available → Use CRS
 
 ---
 
-## 🛠️ 开发
+## 📊 Comparison
 
-### 本地开发
+| Feature | Oh Mine | Oh My OpenClaw | Other Frameworks |
+|---------|---------|----------------|------------------|
+| Agent Count | 3 | 11 | 5-20+ |
+| Config Complexity | ⭐ | ⭐⭐⭐⭐ | ⭐⭐⭐ |
+| Learning Curve | 5 min | 1 hour | Half day |
+| Best For | Daily tasks | Big projects | Enterprise |
+| Token Usage | Low | Medium | High |
+
+---
+
+## 🛠️ Development
+
+### Local Development
 
 ```bash
 # Clone
@@ -224,59 +226,60 @@ openclaw plugins install .
 openclaw gateway restart
 ```
 
-### 项目结构
+### Project Structure
 
 ```
 oh-mine-openclaw/
-├── index.ts                 # 插件入口
-├── openclaw.plugin.json     # 插件配置
+├── index.ts                 # Plugin entry point
+├── openclaw.plugin.json     # Plugin configuration
 ├── package.json
 ├── tsconfig.json
 ├── README.md
+├── README_CN.md             # Chinese documentation
 ├── config/
-│   └── default-config.json  # 默认配置模板
+│   └── default-config.json  # Default config template
 └── skills/
-    └── SKILL.md             # 技能文档
+    └── SKILL.md             # Skill documentation
 ```
 
 ---
 
-## 🤝 贡献
+## 🤝 Contributing
 
-欢迎提 Issue 和 PR！
+Issues and PRs are welcome!
 
-### 想添加新功能？
+### Want to Add a Feature?
 
-1. Fork 本仓库
-2. 创建特性分支 (`git checkout -b feature/AmazingFeature`)
-3. 提交改动 (`git commit -m 'Add some AmazingFeature'`)
-4. 推送到分支 (`git push origin feature/AmazingFeature`)
-5. 开启 Pull Request
+1. Fork this repo
+2. Create your feature branch (`git checkout -b feature/AmazingFeature`)
+3. Commit your changes (`git commit -m 'Add some AmazingFeature'`)
+4. Push to the branch (`git push origin feature/AmazingFeature`)
+5. Open a Pull Request
 
-### 想报告问题？
+### Want to Report a Bug?
 
-直接提 Issue，描述清楚：
-- 问题现象
-- 期望行为
-- 环境信息（OpenClaw 版本、OS 等）
+Just open an Issue with:
+- Bug description
+- Expected behavior
+- Environment info (OpenClaw version, OS, etc.)
 
 ---
 
 ## 📄 License
 
-MIT License — 想用就用，记得给个 ⭐️
+MIT License — Use it freely, just give us a ⭐️
 
 ---
 
-## 🙏 致谢
+## 🙏 Acknowledgments
 
-- [OpenClaw](https://openclaw.ai) — 强大的 AI 助手框架
-- [oh-my-openclaw](https://github.com/happycastle114/oh-my-openclaw) — 灵感来源
-- [Claude](https://claude.ai) — 帮我写代码
+- [OpenClaw](https://openclaw.ai) — Powerful AI assistant framework
+- [oh-my-openclaw](https://github.com/happycastle114/oh-my-openclaw) — Inspiration
+- [Claude](https://claude.ai) — Helped write the code
 
 ---
 
-## 📮 联系方式
+## 📮 Contact
 
 - **GitHub**: [@toller892](https://github.com/toller892)
 - **OpenClaw Community**: [Discord](https://discord.gg/clawd)
@@ -285,7 +288,7 @@ MIT License — 想用就用，记得给个 ⭐️
 
 <div align="center">
 
-**觉得有用？给个 ⭐️ Star 支持一下！**
+**Find it useful? Give us a ⭐️ Star!**
 
 Made with ❤️ by Tony
 
