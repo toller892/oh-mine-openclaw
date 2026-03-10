@@ -29,7 +29,7 @@ Tired of complex multi-agent systems? 11 agents, 50 config options, 3 pages of d
 
 ### Installation
 
-#### Option 1: Install from GitHub (Recommended)
+#### Option 1: Install from GitHub (Recommended) ✅ Tested
 
 ```bash
 openclaw plugins install github:toller892/oh-mine-openclaw
@@ -41,6 +41,7 @@ openclaw gateway restart
 ```bash
 git clone https://github.com/toller892/oh-mine-openclaw.git
 cd oh-mine-openclaw
+npm install
 openclaw plugins install .
 openclaw gateway restart
 ```
@@ -49,7 +50,6 @@ openclaw gateway restart
 
 ```bash
 openclaw plugins install oh-mine-openclaw
-openclaw gateway restart
 ```
 
 ### Usage
@@ -253,8 +253,10 @@ oh-mine-openclaw/
 ├── openclaw.plugin.json     # Plugin configuration
 ├── package.json
 ├── tsconfig.json
-├── README.md
-├── README_CN.md             # Chinese documentation
+├── README.md                 # English documentation
+├── README_CN.md              # Chinese documentation
+├── CONTRIBUTING.md           # Contributing guide
+├── LICENSE                   # MIT License
 ├── config/
 │   └── default-config.json  # Default config template
 └── skills/
@@ -281,6 +283,8 @@ Just open an Issue with:
 - Bug description
 - Expected behavior
 - Environment info (OpenClaw version, OS, etc.)
+
+See [CONTRIBUTING.md](CONTRIBUTING.md) for details.
 
 ---
 
