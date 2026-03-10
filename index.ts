@@ -1,8 +1,12 @@
 /**
- * Oh Mine OpenClaw — 极简主义多 Agent 编排插件
+ * Oh Mine OpenClaw — 极简主义多 Agent 编排 Skill
  * 
  * 3 个 Agent：Planner, Worker, Reviewer
  * 3 个模式：fast, balanced, thorough
+ * 
+ * 使用方式：
+ *  直接发消息："用 mine-fast 模式：修复这个 bug"
+ *  或者："用 mine-balanced：加个登录功能"
  */
 
 import type { OpenClawPluginApi } from "openclaw/plugin-sdk";
@@ -19,11 +23,6 @@ interface MineConfig {
     planner: AgentConfig;
     worker: AgentConfig;
     reviewer: AgentConfig;
-  };
-  modes: {
-    fast: string[];
-    balanced: string[];
-    thorough: string[];
   };
 }
 
@@ -46,12 +45,6 @@ function loadConfig(api: OpenClawPluginApi): MineConfig {
           worker: { model: 'auto', temperature: 0.3, ...userConfig.agents?.worker },
           reviewer: { model: 'auto', temperature: 0.2, ...userConfig.agents?.reviewer },
         },
-        modes: {
-          fast: ['worker'],
-          balanced: ['planner', 'worker'],
-          thorough: ['planner', 'worker', 'reviewer'],
-          ...userConfig.modes,
-        },
       };
     }
   } catch (e) {
@@ -63,11 +56,6 @@ function loadConfig(api: OpenClawPluginApi): MineConfig {
       planner: { model: 'auto', temperature: 0.7 },
       worker: { model: 'auto', temperature: 0.3 },
       reviewer: { model: 'auto', temperature: 0.2 },
-    },
-    modes: {
-      fast: ['worker'],
-      balanced: ['planner', 'worker'],
-      thorough: ['planner', 'worker', 'reviewer'],
     },
   };
 }
@@ -82,10 +70,6 @@ function saveConfig(api: OpenClawPluginApi, config: Partial<MineConfig>): void {
       planner: { ...existing.agents.planner, ...config.agents?.planner },
       worker: { ...existing.agents.worker, ...config.agents?.worker },
       reviewer: { ...existing.agents.reviewer, ...config.agents?.reviewer },
-    },
-    modes: {
-      ...existing.modes,
-      ...config.modes,
     },
   };
   
@@ -117,99 +101,64 @@ function resolveModel(alias: string, api: OpenClawPluginApi): string {
   return 'default';
 }
 
-/** 运行 Agent 链 */
-async function runAgentChain(
-  api: OpenClawPluginApi,
-  chain: string[],
-  task: string,
-  config: MineConfig
-): Promise<string> {
-  let context = task;
-  const results: string[] = [];
-  
-  for (const agentName of chain) {
-    const agentConfig = config.agents[agentName as keyof typeof config.agents];
-    if (!agentConfig) continue;
-    
-    const model = resolveModel(agentConfig.model, api);
-    api.logger.info(`Running ${agentName} with model ${model}`);
-    
-    const response = await api.agent({
-      message: context,
-      model: model,
-      temperature: agentConfig.temperature,
-    });
-    
-    results.push(`**[${agentName}]**: ${response}`);
-    context = response;
-  }
-  
-  return results.join('\n\n');
-}
-
 export default function (api: OpenClawPluginApi) {
-  api.logger.info('oh-mine-openclaw loaded');
+  api.logger.info('oh-mine-openclaw skill loaded');
   
   const config = loadConfig(api);
   
-  // 注册 Gateway 方法
-  api.registerGatewayMethod('mine.fast', async ({ params, respond }) => {
-    const task = params?.text as string;
-    if (!task) {
-      respond(false, { error: 'Task is required' });
-      return;
-    }
-    
-    const result = await runAgentChain(api, config.modes.fast, task, config);
-    respond(true, { result });
+  // 注册配置查看工具
+  api.registerTool({
+    name: 'mine_config',
+    description: 'View oh-mine configuration',
+    parameters: {
+      type: 'object',
+      properties: {},
+    },
+    async execute() {
+      const configPath = getConfigPath(api);
+      return {
+        content: [{
+          type: 'text',
+          text: `⛏️ oh-mine Config\n\nConfig file: ${configPath}\n\n` +
+            `Agents:\n` +
+            `- Planner: ${config.agents.planner.model} (temp: ${config.agents.planner.temperature})\n` +
+            `- Worker: ${config.agents.worker.model} (temp: ${config.agents.worker.temperature})\n` +
+            `- Reviewer: ${config.agents.reviewer.model} (temp: ${config.agents.reviewer.temperature})`,
+        }],
+      };
+    },
   });
   
-  api.registerGatewayMethod('mine.balanced', async ({ params, respond }) => {
-    const task = params?.text as string;
-    if (!task) {
-      respond(false, { error: 'Task is required' });
-      return;
-    }
-    
-    const result = await runAgentChain(api, config.modes.balanced, task, config);
-    respond(true, { result });
-  });
-  
-  api.registerGatewayMethod('mine.thorough', async ({ params, respond }) => {
-    const task = params?.text as string;
-    if (!task) {
-      respond(false, { error: 'Task is required' });
-      return;
-    }
-    
-    const result = await runAgentChain(api, config.modes.thorough, task, config);
-    respond(true, { result });
-  });
-  
-  api.registerGatewayMethod('mine.config', ({ respond }) => {
-    const configPath = getConfigPath(api);
-    respond(true, {
-      config,
-      configPath,
-    });
-  });
-  
-  api.registerGatewayMethod('mine.set', ({ params, respond }) => {
-    const agent = params?.agent as string;
-    const prop = params?.property as string;
-    const value = params?.value;
-    
-    if (!agent || !prop) {
-      respond(false, { error: 'agent and property are required' });
-      return;
-    }
-    
-    saveConfig(api, {
-      agents: {
-        [agent]: { [prop]: value },
-      } as any,
-    });
-    
-    respond(true, { message: `Updated ${agent}.${prop} = ${value}` });
+  // 注册配置修改工具
+  api.registerTool({
+    name: 'mine_set',
+    description: 'Set oh-mine agent configuration',
+    parameters: {
+      type: 'object',
+      properties: {
+        agent: { type: 'string', enum: ['planner', 'worker', 'reviewer'] },
+        property: { type: 'string', enum: ['model', 'temperature'] },
+        value: { type: 'string' },
+      },
+      required: ['agent', 'property', 'value'],
+    },
+    async execute(_id, params) {
+      const { agent, property, value } = params as any;
+      
+      const configValue = property === 'temperature' ? parseFloat(value) : value;
+      
+      saveConfig(api, {
+        agents: {
+          [agent]: { [property]: configValue },
+        } as any,
+      });
+      
+      return {
+        content: [{
+          type: 'text',
+          text: `✅ Updated ${agent}.${property} = ${configValue}`,
+        }],
+      };
+    },
   });
 }
