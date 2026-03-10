@@ -29,8 +29,27 @@
 
 ### 安装
 
+#### 方式 1：从 GitHub 安装（推荐）✅ 已测试
+
+```bash
+openclaw plugins install github:toller892/oh-mine-openclaw
+openclaw gateway restart
+```
+
+#### 方式 2：本地安装
+
+```bash
+git clone https://github.com/toller892/oh-mine-openclaw.git
+cd oh-mine-openclaw
+openclaw plugins install .
+openclaw gateway restart
+```
+
+#### 方式 3：从 npm 安装（即将推出）
+
 ```bash
 openclaw plugins install oh-mine-openclaw
+openclaw gateway restart
 ```
 
 ### 使用

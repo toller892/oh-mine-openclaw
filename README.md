@@ -29,8 +29,27 @@ Tired of complex multi-agent systems? 11 agents, 50 config options, 3 pages of d
 
 ### Installation
 
+#### Option 1: Install from GitHub (Recommended)
+
+```bash
+openclaw plugins install github:toller892/oh-mine-openclaw
+openclaw gateway restart
+```
+
+#### Option 2: Install from Local Path
+
+```bash
+git clone https://github.com/toller892/oh-mine-openclaw.git
+cd oh-mine-openclaw
+openclaw plugins install .
+openclaw gateway restart
+```
+
+#### Option 3: Install from npm (Coming Soon)
+
 ```bash
 openclaw plugins install oh-mine-openclaw
+openclaw gateway restart
 ```
 
 ### Usage
